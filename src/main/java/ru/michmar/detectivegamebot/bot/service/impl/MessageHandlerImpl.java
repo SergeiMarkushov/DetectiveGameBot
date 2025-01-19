@@ -16,9 +16,9 @@ public class MessageHandlerImpl implements MessageHandler {
 
     @Override
     public void handleTextMessage(Update update, TelegramBot telegramBot) {
-        String messageText = update.getMessage().getText();
-        long chatId = update.getMessage().getChatId();
-        String username = update.getMessage().getFrom().getFirstName();
+        var messageText = update.getMessage().getText();
+        var chatId = update.getMessage().getChatId();
+        var username = update.getMessage().getFrom().getFirstName();
 
         if (messageText.equals("/start")) {
             creatingMessage.sendMainMenu(chatId, telegramBot);

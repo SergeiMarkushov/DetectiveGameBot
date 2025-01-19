@@ -14,8 +14,8 @@ import java.util.List;
 
 @Component
 public class MessageUtil {
-    public void clearButtonsFromMessage(long chatId, int messageId, TelegramBot telegramBot) {
-        EditMessageReplyMarkup editMessageReplyMarkup = new EditMessageReplyMarkup();
+    public void clearButtonsFromMessage(Long chatId, Integer messageId, TelegramBot telegramBot) {
+        var editMessageReplyMarkup = new EditMessageReplyMarkup();
         editMessageReplyMarkup.setChatId(chatId);
         editMessageReplyMarkup.setMessageId(messageId);
         editMessageReplyMarkup.setReplyMarkup(null);
@@ -27,7 +27,7 @@ public class MessageUtil {
         }
     }
 
-    public void sentMessageAndClearButtons(long chatId, Integer messageId,
+    public void sentMessageAndClearButtons(Long chatId, Integer messageId,
                                            InlineKeyboardMarkup buttons, TelegramBot telegramBot, String answer) {
         if (messageId != null) {
             clearButtonsFromMessage(chatId, messageId, telegramBot);
@@ -36,21 +36,19 @@ public class MessageUtil {
         sendMessage(chatId, buttons, answer, telegramBot);
     }
 
-    public InlineKeyboardMarkup makeTwoButtons(BotButton button1, BotButton button2) {
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+    public InlineKeyboardMarkup makeButtons(BotButton... buttons) {
+        List<BotButton> listButtons = List.of(buttons);
+
+        var markupInline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
         List<InlineKeyboardButton> rowInline = new ArrayList<>();
 
-        InlineKeyboardButton firstButton = new InlineKeyboardButton();
-        firstButton.setText(button1.getText());
-        firstButton.setCallbackData(button1.getData());
-
-        InlineKeyboardButton secondButton = new InlineKeyboardButton();
-        secondButton.setText(button2.getText());
-        secondButton.setCallbackData(button2.getData());
-
-        rowInline.add(firstButton);
-        rowInline.add(secondButton);
+        for (BotButton fromListButton : listButtons) {
+            var button = new InlineKeyboardButton();
+            button.setText(fromListButton.getText());
+            button.setCallbackData(fromListButton.getData());
+            rowInline.add(button);
+        }
         rowsInline.add(rowInline);
 
         markupInline.setKeyboard(rowsInline);
@@ -58,8 +56,8 @@ public class MessageUtil {
         return markupInline;
     }
 
-    public void sendMessage(long chatId, InlineKeyboardMarkup buttons, String message, TelegramBot telegramBot) {
-        SendMessage sendMessage = new SendMessage();
+    public void sendMessage(Long chatId, InlineKeyboardMarkup buttons, String message, TelegramBot telegramBot) {
+        var sendMessage = new SendMessage();
         if (buttons != null) {
             sendMessage.setReplyMarkup(buttons);
         }
